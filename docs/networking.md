@@ -2,18 +2,18 @@
 
 ## Access Model
 
-All services are accessed via Tailscale VPN.
+All services are accessed through Tailscale.
 
 ## Security
 
-- No open ports
-- No public IP exposure
-- Encrypted communication (WireGuard)
+- No public port forwarding
+- No public service exposure
+- Encrypted private access between trusted devices
 
 ## Internal Networking
 
-Docker containers communicate using bridge networks.
+Docker containers communicate using Docker networking.
 
 ## Notes
 
-This setup prioritizes simplicity and security.
+The current model prioritizes security, simplicity, and easy remote management.

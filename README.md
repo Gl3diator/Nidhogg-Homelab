@@ -11,8 +11,8 @@
 <p align="center">
   <a href="#overview">Overview</a> •
   <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#documentation">Docs</a>
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-documentation">Documentation</a>
 </p>
 
 <p align="center">
@@ -75,6 +75,12 @@ It focuses on simplicity, private access, and iterative learning rather than pro
   </tr>
 
   <tr>
+    <td><img width="32" src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/filebrowser.png"></td>
+    <td><a href="https://filebrowser.org">File Browser</a></td>
+    <td>Web-based file manager for server storage</td>
+  </tr>
+
+  <tr>
     <td><img width="32" src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png"></td>
     <td><a href="https://ubuntu.com/server">Ubuntu Server</a></td>
     <td>Base operating system</td>
@@ -99,6 +105,44 @@ No ports are exposed to the public internet.
 
 ---
 
+## Project Structure
+
+```text
+homelab/
+├── README.md
+├── LICENSE
+├── CONTRIBUTING.md
+├── SECURITY.md
+│
+├── img/
+│   ├── nidhogg_logo.png
+│   └── architecture.png
+│
+├── docs/
+│   ├── architecture.md
+│   ├── networking.md
+│   ├── services.md
+│   ├── monitoring.md
+│   ├── storage.md
+│   └── hardware.md
+│
+├── apps/
+│   ├── portainer/
+│   │   └── README.md
+│   ├── glances/
+│   │   └── README.md
+│   ├── tailscale/
+│   │   └── README.md
+│   └── filebrowser/
+│       └── README.md
+│
+└── compose/
+    ├── portainer.yml
+    ├── glances.yml
+    └── filebrowser/
+        └── docker-compose.yml
+```
+---
 ## 📚 Documentation
 
 - [Architecture](docs/architecture.md)
