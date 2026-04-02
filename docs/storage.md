@@ -4,12 +4,12 @@
 
 - 1TB HDD
 - LVM enabled
-- Root expanded to full disk (~914GB usable)
+- Root filesystem expanded to full usable capacity
 
-## Docker
+## Docker Storage
 
-- Volumes stored in /var/lib/docker
+Docker volumes are stored on the main system storage.
 
 ## Notes
 
-Optimized for simplicity over performance.
+The storage setup prioritizes simplicity and available capacity over raw performance.

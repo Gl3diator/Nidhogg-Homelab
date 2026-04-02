@@ -1,15 +1,25 @@
 # Services
 
-## Portainer
+## Current Services
 
-- Role: Docker management UI
+### Portainer
+
+- Purpose: Docker management UI
+- Access: Internal / Tailscale
 - Port: 9000
 
-## Glances
+### Glances
 
-- Role: System monitoring
+- Purpose: Lightweight system monitoring
+- Access: Internal / Tailscale
 - Port: 61208
+
+### Tailscale
+
+- Purpose: Secure private remote access
+- Deployment: Installed directly on the host
+- Notes: Used as the main access layer for the homelab
 
 ## Notes
 
-Services are deployed using Docker and accessed via Tailscale.
+This service list will expand as new applications are added.

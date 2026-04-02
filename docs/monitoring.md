@@ -2,17 +2,19 @@
 
 ## Glances
 
-Provides real-time monitoring for:
+Glances is used for lightweight real-time monitoring.
 
-- CPU
-- Memory
-- Disk
-- Processes
+### Metrics observed
 
-## Deployment
+- CPU usage
+- Memory usage
+- Disk usage
+- Running processes
 
-Runs in Docker using host networking.
+### Deployment
+
+Runs in Docker and uses host-level visibility for monitoring.
 
 ## Notes
 
-Lightweight solution focused on visibility.
+The current monitoring approach is intentionally lightweight and focused on visibility rather than long-term analytics.

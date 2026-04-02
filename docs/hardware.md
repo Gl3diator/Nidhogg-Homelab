@@ -8,4 +8,4 @@
 
 ## Notes
 
-Low-power setup suitable for lightweight workloads.
+This is a low-power, lightweight homelab platform suitable for learning, small services, and self-hosted experimentation.
