@@ -1,0 +1,12 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --url http://nginx_proxy:80
+    networks:
+      - proxy_proxy
+
+networks:
+  proxy_proxy:
+    external: true

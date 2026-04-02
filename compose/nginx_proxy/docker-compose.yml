@@ -1,0 +1,18 @@
+services:
+  nginx-proxy:
+    image: nginx:stable-alpine
+    container_name: nginx_proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - proxy
+      - symfony-app_default
+
+networks:
+  proxy:
+    driver: bridge
+  symfony-app_default:
+    external: true

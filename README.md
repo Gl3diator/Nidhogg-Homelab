@@ -19,6 +19,7 @@
   <img src="https://img.shields.io/badge/OS-Ubuntu%2024.04-orange?style=flat-square"/>
   <img src="https://img.shields.io/badge/Docker-Enabled-blue?style=flat-square"/>
   <img src="https://img.shields.io/badge/Access-Tailscale-green?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Public-Cloudflare%20Tunnel-purple?style=flat-square"/>
   <img src="https://img.shields.io/badge/status-active-success?style=flat-square"/>
 </p>
 
@@ -30,6 +31,11 @@ This homelab is a **single-node Docker-based environment** used to experiment wi
 
 It focuses on simplicity, private access, and iterative learning rather than production complexity.
 
+It currently follows a **hybrid exposure model**:
+
+- **Public web apps** are exposed through **Cloudflare Tunnel** and a central **Nginx reverse proxy**
+- **Internal tools** remain private through **Tailscale**
+
 ---
 
 ## 🧠 Architecture
@@ -39,7 +45,6 @@ It focuses on simplicity, private access, and iterative learning rather than pro
 </p>
 
 ---
-
 
 ## 🧱 Tech Stack
 
@@ -81,6 +86,30 @@ It focuses on simplicity, private access, and iterative learning rather than pro
   </tr>
 
   <tr>
+    <td><img width="32" src="https://nginx.org/nginx.png"></td>
+    <td><a href="https://nginx.org">Nginx</a></td>
+    <td>Used both as a central reverse proxy and as the web server</td>
+  </tr>
+
+  <tr>
+    <td><img width="32" src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png"></td>
+    <td><a href="https://www.cloudflare.com">Cloudflare Tunnel</a></td>
+    <td>Secure public exposure without router port forwarding</td>
+  </tr>
+
+  <tr>
+    <td><img width="32" src="https://symfony.com/logos/symfony_black_03.svg"></td>
+    <td><a href="https://symfony.com">Symfony</a></td>
+    <td>Main public web application stack</td>
+  </tr>
+
+  <tr>
+    <td><img width="32" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyDh73gbtgz6QSkrrW7IlBbo8pcYp3jpJ-3w&s" ></td>
+    <td><a href="https://mariadb.org">MariaDB</a></td>
+    <td>Database backend for the Symfony application</td>
+  </tr>
+
+  <tr>
     <td><img width="32" src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png"></td>
     <td><a href="https://ubuntu.com/server">Ubuntu Server</a></td>
     <td>Base operating system</td>
@@ -100,8 +129,14 @@ It focuses on simplicity, private access, and iterative learning rather than pro
 
 ## 🔒 Access Model
 
-All services are accessed privately via Tailscale.  
-No ports are exposed to the public internet.
+### Internal Only (Tailscale / LAN)
+- Portainer
+- Glances
+- File Browser
+
+### Public
+- Symfony application
+- Routed through Cloudflare Tunnel → Nginx reverse proxy
 
 ---
 
@@ -133,16 +168,33 @@ homelab/
 │   │   └── README.md
 │   ├── tailscale/
 │   │   └── README.md
-│   └── filebrowser/
+│   ├── filebrowser/
+│   │   └── README.md
+│   ├── symfony-app/
+│   │   └── README.md
+│   ├── nginx/
+│   │   └── README.md
+│   └── mariadb/
 │       └── README.md
 │
 └── compose/
     ├── portainer.yml
     ├── glances.yml
-    └── filebrowser/
+    ├── filebrowser/
+    │   └── docker-compose.yml
+    ├── symfony-app/
+    │   └── docker-compose.yml
+    ├── nginx_proxy/
+    │   ├── docker-compose.yml
+    │   └── nginx/
+    │       └── conf.d/
+    │           └── symfony.conf
+    └── cloudflared/
         └── docker-compose.yml
 ```
+
 ---
+
 ## 📚 Documentation
 
 - [Architecture](docs/architecture.md)
@@ -159,6 +211,7 @@ homelab/
 - Learn Docker networking and containerization  
 - Build scalable service architecture  
 - Deploy APIs and web applications  
+- Practice reverse proxy and tunnel-based public hosting  
 
 ---
 
