@@ -44,6 +44,9 @@ The environment intentionally stays small and practical while providing enough i
 
 ## 🧠 Architecture
 
+![Nidhogg Homelab Architecture](img/architecture.png)
+
+
 Nidhogg combines Docker workloads with native host services.
 
 ```mermaid
@@ -93,34 +96,27 @@ OpenClaw is managed separately as a user-level systemd service.
 
 ---
 
-## 🧱 Services
+## 🧱 Tech Stack
 
-| Service | Role | Access |
-| --- | --- | --- |
-| **Beszel** | Lightweight infrastructure monitoring | Tailscale |
-| **Beszel Agent** | Host/container metrics | Internal |
-| **Beszel Socket Proxy** | Restricted Docker API access | Loopback |
-| **Prometheus** | Metrics collection and time-series storage | Tailscale / private |
-| **Grafana** | Monitoring dashboards | Tailscale / private |
-| **Node Exporter** | Linux host metrics | Internal |
-| **cAdvisor** | Docker/container metrics | Internal |
-| **Glances** | Real-time system monitoring | LAN / private |
-| **Jellyfin** | Media server | LAN / private |
-| **qBittorrent** | Download client | Tailscale |
-| **File Browser** | Web file management | LAN / private |
-| **Samba** | Network file sharing | LAN |
-| **Nginx Web** | Web server | Host port 80 |
-| **Portainer** | Docker management UI | Private |
-| **Tailscale** | Private overlay networking | Host |
-| **OpenSSH** | Remote shell access | Host |
-| **OpenClaw / Lilith** | Multi-agent personal assistant | Tailscale |
-| **Symfony** | Web application development | Homelab project |
-| **MariaDB** | Application database | Internal |
-| **Cloudflare Tunnel** | Tunnel-based web publishing | Homelab project |
-
-Administrative interfaces and databases are not intended for direct public Internet exposure.
-
----
+| Logo | Service | Role | Access |
+| :---: | --- | --- | --- |
+| <img src="https://cdn.simpleicons.org/docker" width="32" alt="Docker"> | Docker | Container runtime | Host |
+| <img src="https://cdn.simpleicons.org/portainer" width="32" alt="Portainer"> | Portainer | Docker management UI | Private |
+| <img src="https://cdn.simpleicons.org/tailscale" width="32" alt="Tailscale"> | Tailscale | Private networking and remote access | Private |
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel.svg" width="32" alt="Beszel"> | Beszel | Lightweight infrastructure monitoring | Tailscale |
+| <img src="https://cdn.simpleicons.org/prometheus" width="32" alt="Prometheus"> | Prometheus | Metrics collection and time-series storage | Private |
+| <img src="https://cdn.simpleicons.org/grafana" width="32" alt="Grafana"> | Grafana | Monitoring dashboards and visualization | Private |
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/glances.svg" width="32" alt="Glances"> | Glances | Real-time system monitoring | Private |
+| <img src="https://cdn.simpleicons.org/jellyfin" width="32" alt="Jellyfin"> | Jellyfin | Media server | Private |
+| <img src="https://cdn.simpleicons.org/qbittorrent" width="32" alt="qBittorrent"> | qBittorrent | Download management | Private |
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/filebrowser.svg" width="32" alt="File Browser"> | File Browser | Web-based file management | Private |
+| 📁 | Samba | SMB file sharing | LAN / Tailscale |
+| <img src="https://cdn.simpleicons.org/nginx" width="32" alt="Nginx"> | Nginx | Web serving and reverse proxying | HTTP |
+| <img src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/pixel-lobster.svg" width="32" alt="OpenClaw"> | OpenClaw / Lilith | Self-hosted multi-agent assistant | Tailscale |
+| <img src="https://cdn.simpleicons.org/symfony" width="32" alt="Symfony"> | Symfony | Web application framework | Web stack |
+| <img src="https://cdn.simpleicons.org/mariadb" width="32" alt="MariaDB"> | MariaDB | Relational database | Internal |
+| <img src="https://cdn.simpleicons.org/cloudflare" width="32" alt="Cloudflare Tunnel"> | Cloudflare Tunnel | Tunnel-based public web access | Public edge |
+| <img src="https://cdn.simpleicons.org/ubuntu" width="32" alt="Ubuntu Server"> | Ubuntu Server | Base operating system | Host |
 
 ## 🤖 Lilith
 
