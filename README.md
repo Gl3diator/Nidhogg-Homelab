@@ -1,201 +1,299 @@
 <p align="center">
-  <img src="img/nidhogg_logo.png" width="260"/>
+  <img src="img/nidhogg_logo.png" width="260" alt="Nidhogg Homelab"/>
 </p>
 
 <h1 align="center">Nidhogg Homelab</h1>
 
 <p align="center">
-  Personal homelab for learning infrastructure, Docker, and self-hosting
+  Single-node self-hosted lab for Docker, networking, infrastructure, media, monitoring, AI, and web development.
 </p>
 
 <p align="center">
   <a href="#overview">Overview</a> •
-  <a href="#-tech-stack">Tech Stack</a> •
+  <a href="#-services">Services</a> •
   <a href="#-architecture">Architecture</a> •
   <a href="#-documentation">Documentation</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/OS-Ubuntu%2024.04-orange?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Docker-Enabled-blue?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Access-Tailscale-green?style=flat-square"/>
-  <img src="https://img.shields.io/badge/Public-Cloudflare%20Tunnel-purple?style=flat-square"/>
-  <img src="https://img.shields.io/badge/status-active-success?style=flat-square"/>
+  <img src="https://img.shields.io/badge/OS-Ubuntu%20Server-E95420?style=flat-square&logo=ubuntu&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Private%20Access-Tailscale-242424?style=flat-square&logo=tailscale&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Host-nidhogg-success?style=flat-square"/>
 </p>
 
 ---
 
 ## Overview
 
-This homelab is a **single-node Docker-based environment** used to experiment with self-hosting, networking, and infrastructure concepts.
+**Nidhogg** is a single-node Ubuntu Server homelab used for learning and experimenting with:
 
-It focuses on simplicity, private access, and iterative learning rather than production complexity.
+- Docker and Docker Compose
+- Linux administration
+- networking and private remote access
+- monitoring and observability
+- self-hosted media
+- storage and file sharing
+- web application deployment
+- reverse proxies and tunneling
+- AI assistants and automation
 
-It currently follows a **hybrid exposure model**:
-
-- **Public web apps** are exposed through **Cloudflare Tunnel** and a central **Nginx reverse proxy**
-- **Internal tools** remain private through **Tailscale**
+The environment intentionally stays small and practical while providing enough infrastructure to experiment with real self-hosted services.
 
 ---
 
 ## 🧠 Architecture
 
-<p align="center">
-  <img src="img/architecture.png" width="750"/>
-</p>
+Nidhogg combines Docker workloads with native host services.
+
+```mermaid
+flowchart TB
+    N["🖥️ Nidhogg<br/>Ubuntu Server"]
+
+    N --> Docker["🐳 Docker Compose"]
+    N --> TS["🔐 Tailscale"]
+    N --> SD["⚙️ systemd"]
+
+    Docker --> MON["📊 Monitoring"]
+    Docker --> MEDIA["🎬 Media"]
+    Docker --> STORAGE["💾 Storage"]
+    Docker --> WEB["🌐 Web"]
+
+    MON --> BESZEL["Beszel"]
+    MON --> NODE["Node Exporter"]
+    MON --> CAD["cAdvisor"]
+    MON --> GLANCES["Glances"]
+
+    NODE --> PROM["Prometheus"]
+    CAD --> PROM
+    PROM --> GRAF["Grafana"]
+
+    PROM -. "self-metrics" .-> PROM
+
+    MEDIA --> JELLYFIN["Jellyfin"]
+    MEDIA --> QBIT["qBittorrent"]
+
+    STORAGE --> FB["File Browser"]
+    STORAGE --> SAMBA["Samba"]
+
+    WEB --> NGINX["Nginx Web"]
+
+    TS --> PRIVATE["Private Remote Access"]
+
+    SD --> OPENCLAW["OpenClaw Gateway"]
+    OPENCLAW --> LILITH["😈 Lilith"]
+```
+
+Docker Compose definitions currently span:
+
+- `/srv/compose/`
+- `/srv/homelab/compose/`
+
+OpenClaw is managed separately as a user-level systemd service.
 
 ---
 
-## 🧱 Tech Stack
+## 🧱 Services
 
-<table>
-  <tr>
-    <th>Logo</th>
-    <th>Name</th>
-    <th>Description</th>
-  </tr>
+| Service | Role | Access |
+| --- | --- | --- |
+| **Beszel** | Lightweight infrastructure monitoring | Tailscale |
+| **Beszel Agent** | Host/container metrics | Internal |
+| **Beszel Socket Proxy** | Restricted Docker API access | Loopback |
+| **Prometheus** | Metrics collection and time-series storage | Tailscale / private |
+| **Grafana** | Monitoring dashboards | Tailscale / private |
+| **Node Exporter** | Linux host metrics | Internal |
+| **cAdvisor** | Docker/container metrics | Internal |
+| **Glances** | Real-time system monitoring | LAN / private |
+| **Jellyfin** | Media server | LAN / private |
+| **qBittorrent** | Download client | Tailscale |
+| **File Browser** | Web file management | LAN / private |
+| **Samba** | Network file sharing | LAN |
+| **Nginx Web** | Web server | Host port 80 |
+| **Portainer** | Docker management UI | Private |
+| **Tailscale** | Private overlay networking | Host |
+| **OpenSSH** | Remote shell access | Host |
+| **OpenClaw / Lilith** | Multi-agent personal assistant | Tailscale |
+| **Symfony** | Web application development | Homelab project |
+| **MariaDB** | Application database | Internal |
+| **Cloudflare Tunnel** | Tunnel-based web publishing | Homelab project |
 
-  <tr>
-    <td><img width="32" src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png"></td>
-    <td><a href="https://www.docker.com">Docker</a></td>
-    <td>Containerization platform for running services</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://cdn.worldvectorlogo.com/logos/portainer.svg"></td>
-    <td><a href="https://www.portainer.io">Portainer</a></td>
-    <td>Web UI for managing Docker containers</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://avatars.githubusercontent.com/u/48932923?s=200&v=4"></td>
-    <td><a href="https://tailscale.com">Tailscale</a></td>
-    <td>Private VPN for secure remote access</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://nicolargo.github.io/glances/public/images/glances.png"></td>
-    <td><a href="https://nicolargo.github.io/glances/">Glances</a></td>
-    <td>Lightweight real-time system monitoring</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/filebrowser.png"></td>
-    <td><a href="https://filebrowser.org">File Browser</a></td>
-    <td>Web-based file manager for server storage</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://nginx.org/nginx.png"></td>
-    <td><a href="https://nginx.org">Nginx</a></td>
-    <td>Used both as a central reverse proxy and as the web server</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png"></td>
-    <td><a href="https://www.cloudflare.com">Cloudflare Tunnel</a></td>
-    <td>Secure public exposure without router port forwarding</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://symfony.com/logos/symfony_black_03.svg"></td>
-    <td><a href="https://symfony.com">Symfony</a></td>
-    <td>Main public web application stack</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyDh73gbtgz6QSkrrW7IlBbo8pcYp3jpJ-3w&s" ></td>
-    <td><a href="https://mariadb.org">MariaDB</a></td>
-    <td>Database backend for the Symfony application</td>
-  </tr>
-
-  <tr>
-    <td><img width="32" src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png"></td>
-    <td><a href="https://ubuntu.com/server">Ubuntu Server</a></td>
-    <td>Base operating system</td>
-  </tr>
-
-</table>
+Administrative interfaces and databases are not intended for direct public Internet exposure.
 
 ---
 
-## 📊 System
+## 🤖 Lilith
 
-- **CPU**: Intel i3-7100  
-- **RAM**: 8GB DDR4-3200  
-- **Storage**: 1TB HDD  
+Nidhogg hosts **Lilith**, a self-hosted multi-agent personal assistant powered by OpenClaw.
+
+OpenClaw runs as a user-level systemd service with its application gateway bound to loopback. Private remote access is provided through Tailscale Serve.
+
+Lilith has its own reproducibility repository:
+
+**[Gl3diator/Lilith](https://github.com/Gl3diator/Lilith)**
+
+---
+
+## 🌐 Networking
+
+Nidhogg uses several networking layers depending on the service:
+
+- **LAN** for local services and file sharing
+- **Tailscale** for private remote access
+- **Docker bridge networks** for container isolation and service communication
+- **Loopback bindings** for host-local infrastructure endpoints
+- **Tailscale Serve** for selected private HTTPS services
+- **Cloudflare Tunnel and Nginx** for web-hosting experimentation
+
+Sensitive administration interfaces are kept away from direct public Internet exposure.
+
+---
+
+## 📊 Monitoring
+
+Nidhogg uses multiple monitoring tools for different levels of visibility.
+
+### Beszel
+
+Beszel provides lightweight infrastructure monitoring through:
+
+- Beszel hub
+- Beszel Agent
+- restricted Docker socket proxy
+
+The Beszel web interface is available privately through Tailscale.
+
+### Prometheus & Grafana
+
+Nidhogg also contains a traditional metrics stack consisting of:
+
+- Prometheus for metrics collection and storage
+- Grafana for dashboards and visualization
+- Node Exporter for Linux host metrics
+- cAdvisor for Docker container metrics
+
+Prometheus and Grafana are configured for private Tailscale access.
+
+### Glances
+
+Glances provides quick real-time visibility into:
+
+- CPU usage
+- memory usage
+- disk usage
+- processes
+- system load
+
+Together these tools allow Nidhogg to experiment with both lightweight monitoring and a more traditional Prometheus/Grafana observability stack.
+
+---
+
+## 🎬 Media & Downloads
+
+### Jellyfin
+
+Jellyfin provides self-hosted media streaming from Nidhogg.
+
+### qBittorrent
+
+qBittorrent provides download management, with its web interface available privately through Tailscale.
+
+---
+
+## 💾 Storage & File Access
+
+### Samba
+
+Samba provides network file sharing across the local network.
+
+### File Browser
+
+File Browser provides browser-based management of server files.
+
+Persistent service data and Compose configuration are kept separate where practical.
+
+---
+
+## 🖥️ Hardware
+
+| Component | Specification |
+| --- | --- |
+| **CPU** | Intel Core i3-7100 |
+| **RAM** | 8 GB DDR4-3200 |
+| **Storage** | 1 TB HDD |
+| **Architecture** | x86_64 |
+| **OS** | Ubuntu Server |
+
+The intentionally modest hardware makes resource efficiency an important part of the project.
+
+---
+
+## 📁 Server Layout
+
+Docker Compose deployments currently span two locations:
+
+```text
+/srv/compose/
+├── beszel/
+└── samba/
+
+/srv/homelab/compose/
+├── filebrowser/
+├── glances/
+├── jellyfin/
+├── monitoring/
+├── portainer/
+├── qbittorrent/
+├── serinity-web/
+└── web/
+```
+
+The repository itself contains documentation, application notes, and reproducible Compose examples for the homelab.
 
 ---
 
 ## 🔒 Access Model
 
-### Internal Only (Tailscale / LAN)
-- Portainer
+Nidhogg favors private access for administration and infrastructure services.
+
+### Private / Internal
+
+Examples include:
+
+- Beszel
 - Glances
 - File Browser
+- Portainer
+- qBittorrent Web UI
+- OpenClaw / Lilith
+- databases and infrastructure endpoints
 
-### Public
-- Symfony application
-- Routed through Cloudflare Tunnel → Nginx reverse proxy
+Tailscale is the primary private remote-access layer.
 
----
+### LAN
 
-## Project Structure
+LAN access is used where appropriate for services such as:
 
-```text
-homelab/
-├── README.md
-├── LICENSE
-├── CONTRIBUTING.md
-├── SECURITY.md
-│
-├── img/
-│   ├── nidhogg_logo.png
-│   └── architecture.png
-│
-├── docs/
-│   ├── architecture.md
-│   ├── networking.md
-│   ├── services.md
-│   ├── monitoring.md
-│   ├── storage.md
-│   └── hardware.md
-│
-├── apps/
-│   ├── portainer/
-│   │   └── README.md
-│   ├── glances/
-│   │   └── README.md
-│   ├── tailscale/
-│   │   └── README.md
-│   ├── filebrowser/
-│   │   └── README.md
-│   ├── symfony-app/
-│   │   └── README.md
-│   ├── nginx/
-│   │   └── README.md
-│   └── mariadb/
-│       └── README.md
-│
-└── compose/
-    ├── portainer.yml
-    ├── glances.yml
-    ├── filebrowser/
-    │   └── docker-compose.yml
-    ├── symfony-app/
-    │   └── docker-compose.yml
-    ├── nginx_proxy/
-    │   ├── docker-compose.yml
-    │   └── nginx/
-    │       └── conf.d/
-    │           └── symfony.conf
-    └── cloudflared/
-        └── docker-compose.yml
-```
+- Samba
+- Jellyfin
+- File Browser
+
+### Web Hosting
+
+Nidhogg is also used to experiment with:
+
+- Nginx
+- Symfony
+- MariaDB
+- Cloudflare Tunnel
+- reverse proxying
+- tunnel-based application publishing
 
 ---
 
 ## 📚 Documentation
+
+Detailed documentation lives under [`docs/`](docs/):
 
 - [Architecture](docs/architecture.md)
 - [Networking](docs/networking.md)
@@ -204,19 +302,45 @@ homelab/
 - [Storage](docs/storage.md)
 - [Hardware](docs/hardware.md)
 
----
-
-## 📌 Goals
-
-- Learn Docker networking and containerization  
-- Build scalable service architecture  
-- Deploy APIs and web applications  
-- Practice reverse proxy and tunnel-based public hosting  
+Service-specific notes and Compose examples are kept under `apps/` and `compose/`.
 
 ---
 
-## ⚠️ Status
+## 🎯 Goals
 
-Project status: **Active / Learning Phase**
+- Learn Linux server administration
+- Understand Docker and Docker networking
+- Build and operate self-hosted services
+- Practice secure private networking
+- Explore monitoring and observability
+- Build media and storage infrastructure
+- Deploy web applications
+- Experiment with reverse proxies and tunnels
+- Explore self-hosted AI assistants and automation
+- Keep the environment reproducible and documented
 
-This homelab evolves as new tools and concepts are explored.
+---
+
+## ⚠️ Security
+
+This repository documents infrastructure but must not contain operational secrets.
+
+The following should remain outside Git:
+
+- passwords
+- API keys
+- authentication tokens
+- private keys
+- `.env` files
+- database credentials
+- tunnel credentials
+- private OpenClaw runtime state
+
+Administrative services, monitoring interfaces, databases, and Docker management endpoints are not intended for direct public Internet exposure.
+
+---
+
+<p align="center">
+  <b>Nidhogg</b><br>
+  Learn it. Host it. Break it. Rebuild it.
+</p>

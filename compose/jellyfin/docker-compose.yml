@@ -1,0 +1,19 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+
+    user: "${JELLYFIN_UID}:${JELLYFIN_GID}"
+
+    ports:
+      - "${JELLYFIN_BIND_IP}:8096:8096/tcp"
+
+    volumes:
+      - /srv/homelab/data/jellyfin/config:/config
+      - /srv/homelab/data/jellyfin/cache:/cache
+      - /srv/homelab/data/media/music:/media/music:ro
+      - /srv/homelab/data/media/movies:/media/movies:ro
+
+    environment:
+      TZ: "${TZ}"

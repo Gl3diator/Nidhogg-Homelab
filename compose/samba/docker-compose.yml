@@ -1,0 +1,32 @@
+services:
+  samba:
+    image: ghcr.io/servercontainers/samba:latest
+    container_name: samba
+    restart: unless-stopped
+
+    ports:
+      - "${TAILSCALE_IP}:445:445"
+      - "${LAN_IP}:445:445"
+
+    environment:
+      MODEL: "NidhoggNAS"
+      AVAHI_DISABLE: "1"
+      WSDD2_DISABLE: "1"
+      NETBIOS_DISABLE: "1"
+      FAIL_FAST: "1"
+
+      ACCOUNT_loki: "${SMB_PASSWORD}"
+      UID_loki: "1000"
+
+      SAMBA_VOLUME_CONFIG_nidhogg: >-
+        [NidhoggShare];
+        path=/shares/nidhogg;
+        valid users = loki;
+        guest ok = no;
+        read only = no;
+        browseable = yes;
+        create mask = 0664;
+        directory mask = 0775
+
+    volumes:
+      - /srv/data/nas:/shares/nidhogg

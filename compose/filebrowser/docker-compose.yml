@@ -8,11 +8,5 @@ services:
       - "8081:80"
 
     volumes:
-      - /srv:/srv
-      - ./data:/database
-
-    environment:
-      - PUID=1000
-      - PGID=1000
-
-    command: --root /srv --database /database/filebrowser.db
+      - /srv/homelab:/srv
+      - /srv/homelab/data/filebrowser/database:/database

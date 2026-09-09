@@ -1,0 +1,19 @@
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+
+    environment:
+      PUID: "${PUID}"
+      PGID: "${PGID}"
+      TZ: "${TZ}"
+      WEBUI_PORT: "8080"
+
+    ports:
+      - "${QBIT_BIND_IP}:${QBIT_WEBUI_PORT}:8080/tcp"
+
+    volumes:
+      - /srv/homelab/data/qbittorrent/config:/config
+      - /srv/homelab/data/downloads:/downloads
+      - /srv/homelab/data/media/music:/media/music

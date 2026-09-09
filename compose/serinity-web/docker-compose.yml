@@ -1,0 +1,79 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: serinity-web
+    restart: unless-stopped
+    depends_on:
+      - php
+    ports:
+      - "8088:80"
+    volumes:
+      - /srv/homelab/apps/serinity-web/project:/var/www/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - serinity_internal
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    container_name: serinity-php
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - /srv/homelab/apps/serinity-web/project:/var/www/html
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      APP_SECRET: "${APP_SECRET}"
+      DATABASE_URL: "mysql://serinity:${DB_PASSWORD}@db:3306/serinity?serverVersion=mariadb-11.4.0&charset=utf8mb4"
+      MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
+      MAILER_DSN: "null://null"
+      REDIS_URL: "redis://redis:6379"
+      CACHE_DSN: "redis://redis:6379"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - serinity_internal
+
+  db:
+    image: mariadb:11.4
+    container_name: serinity-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: serinity
+      MARIADB_USER: serinity
+      MARIADB_PASSWORD: "${DB_PASSWORD}"
+      MARIADB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    ports:
+      - "${TAILSCALE_IP}:3306:3306"
+    volumes:
+      - /srv/homelab/data/serinity-web/mariadb:/var/lib/mysql
+    networks:
+      - serinity_internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: serinity-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - "no"
+      - --save
+      - ""
+    networks:
+      - serinity_internal
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+networks:
+  serinity_internal:
+    name: serinity_internal

@@ -1,12 +1,16 @@
 services:
   glances:
-    image: nicolargo/glances:latest-full
+    image: nicolargo/glances:latest
     container_name: glances
     restart: unless-stopped
     pid: host
     network_mode: host
+
     environment:
-      - GLANCES_OPT=-w
+      GLANCES_OPT: "-w"
+      HOST_PROC: /host/proc
+      HOST_SYS: /host/sys
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/os-release:/etc/os-release:ro

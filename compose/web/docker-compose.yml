@@ -1,0 +1,11 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: nidhogg-web
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - /srv/homelab/data/web:/usr/share/nginx/html:ro

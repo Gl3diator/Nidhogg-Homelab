@@ -1,0 +1,3 @@
+
+# Local Compose environment files
+compose/**/.env
