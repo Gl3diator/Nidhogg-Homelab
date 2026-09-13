@@ -24,6 +24,8 @@ Docker workloads are primarily managed with Docker Compose, while some host-leve
 | qBittorrent | Download management | Tailscale |
 | File Browser | Web-based file management | LAN / private |
 | Samba | Network file sharing | LAN |
+| Obsidian LiveSync | Cross-device Obsidian vault synchronization | Tailscale |
+| CouchDB | Backend database for Obsidian LiveSync | Loopback / Tailscale Serve |
 | Nginx Web | General web serving | Host port 80 |
 | Portainer | Docker management | Private |
 | Tailscale | Private overlay networking | Host |

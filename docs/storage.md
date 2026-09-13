@@ -20,6 +20,7 @@ Known Compose projects are located at:
 ```text
 /srv/compose/
 ├── beszel/
+├── obsidian-livesync/
 └── samba/
 
 /srv/homelab/compose/

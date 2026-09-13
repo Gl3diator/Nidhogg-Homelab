@@ -53,38 +53,59 @@ Nidhogg combines Docker workloads with native host services.
 flowchart TB
     N["🖥️ Nidhogg<br/>Ubuntu Server"]
 
-    N --> Docker["🐳 Docker Compose"]
-    N --> TS["🔐 Tailscale"]
-    N --> SD["⚙️ systemd"]
+    N --> D["🐳 Docker Compose"]
+    N --> T["🔐 Tailscale"]
+    N --> S["⚙️ systemd"]
 
-    Docker --> MON["📊 Monitoring"]
-    Docker --> MEDIA["🎬 Media"]
-    Docker --> STORAGE["💾 Storage"]
-    Docker --> WEB["🌐 Web"]
+    D --> MON["📊 Monitoring"]
+    D --> MEDIA["🎬 Media"]
+    D --> STORAGE["💾 Storage"]
+    D --> WEB["🌐 Web / Apps"]
+    D --> SYNC["📝 Sync / Notes"]
 
-    MON --> BESZEL["Beszel"]
-    MON --> NODE["Node Exporter"]
-    MON --> CAD["cAdvisor"]
-    MON --> GLANCES["Glances"]
+    MON --> B["Beszel"]
+    MON --> BA["Beszel Agent"]
+    MON --> BSP["Beszel Socket Proxy"]
+    MON --> NE["Node Exporter"]
+    MON --> CA["cAdvisor"]
+    MON --> G["Glances"]
 
-    NODE --> PROM["Prometheus"]
-    CAD --> PROM
-    PROM --> GRAF["Grafana"]
-
+    NE --> PROM["Prometheus"]
+    CA --> PROM
+    PROM --> GR["Grafana"]
     PROM -. "self-metrics" .-> PROM
 
-    MEDIA --> JELLYFIN["Jellyfin"]
-    MEDIA --> QBIT["qBittorrent"]
+    MEDIA --> J["Jellyfin"]
+    MEDIA --> Q["qBittorrent"]
 
     STORAGE --> FB["File Browser"]
-    STORAGE --> SAMBA["Samba"]
+    STORAGE --> SMB["Samba"]
 
-    WEB --> NGINX["Nginx Web"]
+    WEB --> NW["Nginx Web"]
+    WEB --> PORT["Portainer"]
+    WEB --> SW["Serinity Web"]
+    WEB --> SYM["Symfony / MariaDB / Cloudflare Lab"]
 
-    TS --> PRIVATE["Private Remote Access"]
+    SYNC --> CDB["CouchDB"]
 
-    SD --> OPENCLAW["OpenClaw Gateway"]
-    OPENCLAW --> LILITH["😈 Lilith"]
+    T --> REMOTE["Private Remote Access"]
+    T --> SERVE["Tailscale Serve"]
+
+    SERVE --> CDB
+    SERVE --> OC
+
+    S --> SSH["OpenSSH"]
+    S --> OC["OpenClaw Gateway"]
+
+    OC --> L["💜 Lilith"]
+
+    FED["Obsidian + LiveSync<br/>Fedora"]
+    PHONE["Obsidian + LiveSync<br/>Android"]
+    WIN["Obsidian + LiveSync<br/>Windows"]
+
+    FED <-->|"Tailscale HTTPS"| SERVE
+    PHONE <-->|"Tailscale HTTPS"| SERVE
+    WIN <-->|"Tailscale HTTPS"| SERVE
 ```
 
 Docker Compose definitions currently span:
@@ -110,7 +131,7 @@ OpenClaw is managed separately as a user-level systemd service.
 | <img src="https://cdn.simpleicons.org/jellyfin" width="32" alt="Jellyfin"> | Jellyfin | Media server | Private |
 | <img src="https://cdn.simpleicons.org/qbittorrent" width="32" alt="qBittorrent"> | qBittorrent | Download management | Private |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/filebrowser.svg" width="32" alt="File Browser"> | File Browser | Web-based file management | Private |
-| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/samba.svg" width="32" alt="Samba"> | Samba | SMB file sharing | LAN / Tailscale |
+| <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/samba.svg" width="32" alt="Samba"> | Samba | SMB file sharing | LAN / Tailscale |
 | <img src="https://cdn.simpleicons.org/obsidian" width="32" alt="Obsidian"> | Obsidian LiveSync | Cross-device Obsidian vault synchronization | Tailscale |
 | <img src="https://cdn.simpleicons.org/apachecouchdb" width="32" alt="Apache CouchDB"> | CouchDB | Backend database for Obsidian LiveSync | Tailscale / localhost |
 | <img src="https://cdn.simpleicons.org/nginx" width="32" alt="Nginx"> | Nginx | Web serving and reverse proxying | HTTP |
