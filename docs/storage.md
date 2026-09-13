@@ -292,3 +292,24 @@ Any future migration should be performed deliberately, one service at a time, wi
 6. documentation updated
 
 Storage paths should not be reorganized simply for cosmetic consistency.
+
+
+---
+
+## Obsidian LiveSync / CouchDB
+
+Persistent CouchDB data for Obsidian LiveSync is stored at:
+
+    /srv/data/obsidian-livesync/couchdb/
+
+This data should remain outside the Git repository.
+
+The Compose configuration lives at:
+
+    /srv/compose/obsidian-livesync/
+
+Repository copies of the Compose file and supporting configuration are stored under:
+
+    compose/obsidian-livesync/
+
+The runtime `.env` file contains credentials and must not be committed.

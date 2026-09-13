@@ -31,6 +31,7 @@ flowchart TB
     D --> MEDIA["Media"]
     D --> STORAGE["Storage"]
     D --> WEB["Web / Apps"]
+    D --> SYNC["Sync / Notes"]
 
     MON --> B["Beszel"]
     MON --> BA["Beszel Agent"]
@@ -54,6 +55,9 @@ flowchart TB
     WEB --> P["Portainer"]
     WEB --> SW["Serinity Web"]
     WEB --> SYM["Symfony / MariaDB / Cloudflare Lab"]
+
+    SYNC --> OBS["Obsidian LiveSync"]
+    OBS --> CDB["CouchDB"]
 
     T --> REMOTE["Private Remote Access"]
     T --> SERVE["Tailscale Serve"]
@@ -247,6 +251,7 @@ Used for private remote access to services including:
 - Beszel
 - qBittorrent
 - OpenClaw / Lilith
+- Obsidian LiveSync / CouchDB
 - selected web services through Tailscale Serve
 
 ### Docker Networks

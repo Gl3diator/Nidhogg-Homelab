@@ -110,7 +110,9 @@ OpenClaw is managed separately as a user-level systemd service.
 | <img src="https://cdn.simpleicons.org/jellyfin" width="32" alt="Jellyfin"> | Jellyfin | Media server | Private |
 | <img src="https://cdn.simpleicons.org/qbittorrent" width="32" alt="qBittorrent"> | qBittorrent | Download management | Private |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/filebrowser.svg" width="32" alt="File Browser"> | File Browser | Web-based file management | Private |
-| 📁 | Samba | SMB file sharing | LAN / Tailscale |
+| <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/samba.svg" width="32" alt="Samba"> | Samba | SMB file sharing | LAN / Tailscale |
+| <img src="https://cdn.simpleicons.org/obsidian" width="32" alt="Obsidian"> | Obsidian LiveSync | Cross-device Obsidian vault synchronization | Tailscale |
+| <img src="https://cdn.simpleicons.org/apachecouchdb" width="32" alt="Apache CouchDB"> | CouchDB | Backend database for Obsidian LiveSync | Tailscale / localhost |
 | <img src="https://cdn.simpleicons.org/nginx" width="32" alt="Nginx"> | Nginx | Web serving and reverse proxying | HTTP |
 | <img src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/pixel-lobster.svg" width="32" alt="OpenClaw"> | OpenClaw / Lilith | Self-hosted multi-agent assistant | Tailscale |
 | <img src="https://cdn.simpleicons.org/symfony" width="32" alt="Symfony"> | Symfony | Web application framework | Web stack |
@@ -231,6 +233,7 @@ Docker Compose deployments currently span two locations:
 ```text
 /srv/compose/
 ├── beszel/
+├── obsidian-livesync/
 └── samba/
 
 /srv/homelab/compose/

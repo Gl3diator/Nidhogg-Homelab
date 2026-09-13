@@ -85,6 +85,7 @@ Services using Tailscale-specific access include:
 | Beszel | `8090` | Tailscale interface |
 | qBittorrent Web UI | `8083` | Tailscale interface |
 | OpenClaw | `18789` | Tailscale Serve → loopback gateway |
+| Obsidian LiveSync / CouchDB | `5984` | Tailscale Serve → loopback CouchDB |
 | Private web access | `443` | Tailscale Serve |
 
 Tailscale itself also uses UDP `41641` for connectivity.
@@ -130,6 +131,7 @@ Some infrastructure endpoints are intentionally restricted to the local host.
 | Endpoint | Purpose |
 | --- | --- |
 | `127.0.0.1:18789` | OpenClaw Gateway |
+| `127.0.0.1:5984` | CouchDB for Obsidian LiveSync |
 | `127.0.0.1:2375` | Restricted Docker socket proxy |
 
 Loopback bindings prevent direct access from other LAN or Internet hosts.
@@ -171,6 +173,7 @@ Relevant host listeners include:
 | `22` | OpenSSH | Host interfaces |
 | `80` | Nginx Web | Host interfaces |
 | `443` | Tailscale Serve | Tailscale |
+| `5984` | CouchDB / Obsidian LiveSync | Loopback + Tailscale Serve |
 | `2375` | Beszel socket proxy | Loopback |
 | `8081` | File Browser | Host interfaces |
 | `8083` | qBittorrent Web UI | Tailscale |

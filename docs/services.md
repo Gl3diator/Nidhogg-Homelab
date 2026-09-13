@@ -200,6 +200,52 @@ Share paths and credentials are intentionally not documented in the public repos
 
 ---
 
+## Obsidian LiveSync / CouchDB
+
+**Purpose:** Private cross-device Obsidian vault synchronization
+
+Nidhogg hosts CouchDB as the backend for the Self-hosted LiveSync Obsidian plugin.
+
+### Components
+
+- CouchDB
+- Self-hosted LiveSync plugin on client devices
+- Tailscale Serve for private HTTPS access
+
+### Access
+
+CouchDB is bound to the host loopback interface:
+
+    127.0.0.1:5984
+
+Tailscale Serve provides private HTTPS access for authorized tailnet devices.
+
+The service is not published through Cloudflare Tunnel, public Nginx routing, or router port forwarding.
+
+### Compose
+
+Runtime configuration:
+
+    /srv/compose/obsidian-livesync/docker-compose.yml
+
+Repository configuration:
+
+    compose/obsidian-livesync/docker-compose.yml
+
+Persistent data:
+
+    /srv/data/obsidian-livesync/couchdb/
+
+### Security
+
+- CouchDB authentication is required.
+- LiveSync end-to-end encryption is enabled on clients.
+- Runtime credentials are stored in `.env` outside Git.
+- The LiveSync Setup URI and QR code should be treated as secrets.
+- CouchDB and Fauxton are not intended for public Internet exposure.
+
+---
+
 ## Nginx Web
 
 **Purpose:** General web serving
