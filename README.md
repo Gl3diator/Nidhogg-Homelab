@@ -131,7 +131,7 @@ OpenClaw is managed separately as a user-level systemd service.
 | <img src="https://cdn.simpleicons.org/jellyfin" width="32" alt="Jellyfin"> | Jellyfin | Media server | Private |
 | <img src="https://cdn.simpleicons.org/qbittorrent" width="32" alt="qBittorrent"> | qBittorrent | Download management | Private |
 | <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/filebrowser.svg" width="32" alt="File Browser"> | File Browser | Web-based file management | Private |
-| <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/samba.svg" width="32" alt="Samba"> | Samba | SMB file sharing | LAN / Tailscale |
+| <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Samba_logo_2010.svg" width="32" alt="Samba"> | Samba | SMB file sharing | LAN / Tailscale |
 | <img src="https://cdn.simpleicons.org/obsidian" width="32" alt="Obsidian"> | Obsidian LiveSync | Cross-device Obsidian vault synchronization | Tailscale |
 | <img src="https://cdn.simpleicons.org/apachecouchdb" width="32" alt="Apache CouchDB"> | CouchDB | Backend database for Obsidian LiveSync | Tailscale / localhost |
 | <img src="https://cdn.simpleicons.org/nginx" width="32" alt="Nginx"> | Nginx | Web serving and reverse proxying | HTTP |
